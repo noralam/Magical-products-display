@@ -1903,7 +1903,6 @@
 .mpd-tabs-accordion #review_form #respond .form-submit input[type="submit"],
 .woocommerce-Tabs-panel--reviews #review_form #respond .form-submit input[type="submit"] {
 	padding: 14px 32px;
-	background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
 	color: #fff;
 	border: none;
 	border-radius: 30px;
@@ -1914,6 +1913,7 @@
 	text-transform: uppercase;
 	transition: all 0.3s ease;
 	box-shadow: 0 4px 15px rgba(102, 126, 234, 0.35);
+	width: auto;
 }
 
 .mpd-product-tabs #review_form #respond .form-submit input[type="submit"]:hover,
@@ -3146,7 +3146,6 @@
 .mpd-product-item .mpd-product-button .add_to_cart_button {
 	display: inline-block;
 	padding: 10px 20px;
-	background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
 	color: #fff !important;
 	border: none;
 	border-radius: 25px;
@@ -3411,7 +3410,6 @@
 .mpd-upsell-item .add_to_cart_button {
 	display: inline-block;
 	padding: 10px 20px;
-	background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
 	color: #fff;
 	border: none;
 	border-radius: 25px;
@@ -4588,7 +4586,7 @@
 }
 
 .mpd-action-buttons-widget .mpd-wishlist-btn.in-wishlist i::before {
-	content: '\e80f'; /* Elementor filled heart icon */
+	content: '\e93f'; /* Elementor eicon-heart (filled) */
 }
 
 /* In-comparison state */
