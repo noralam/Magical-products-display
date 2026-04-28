@@ -87,7 +87,7 @@ class Add_To_Cart extends Widget_Base {
 	 * @return array Style dependencies.
 	 */
 	public function get_style_depends() {
-		return array( 'mpd-single-product' );
+		return array( 'mpd-single-product', 'mpd-wc-action-buttons' );
 	}
 
 	/**
