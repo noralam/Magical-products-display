@@ -1801,32 +1801,62 @@
 	color: #1a1a2e;
 }
 
+/* Stars container: row-reverse so CSS sibling selector (~) can target "left" stars */
 .mpd-product-tabs #review_form #respond .stars,
 .mpd-tabs-accordion #review_form #respond .stars,
 .woocommerce-Tabs-panel--reviews #review_form #respond .stars {
 	margin: 0;
 	padding: 0;
 	display: inline-flex;
-	gap: 8px;
+	flex-direction: row-reverse;
+	gap: 4px;
 }
 
+/* Hide the WooCommerce link text, show star icon via ::before */
 .mpd-product-tabs #review_form #respond .stars a,
 .mpd-tabs-accordion #review_form #respond .stars a,
 .woocommerce-Tabs-panel--reviews #review_form #respond .stars a {
 	color: #ddd;
 	text-decoration: none;
-	font-size: 24px;
-	transition: all 0.2s ease;
+	font-size: 0; /* hide link text like "1 of 5 stars" */
+	transition: color 0.15s ease, transform 0.15s ease;
+	cursor: pointer;
+}
+
+.mpd-product-tabs #review_form #respond .stars a::before,
+.mpd-tabs-accordion #review_form #respond .stars a::before,
+.woocommerce-Tabs-panel--reviews #review_form #respond .stars a::before {
+	content: "★";
+	font-size: 28px;
+	line-height: 1;
+	display: inline-block;
+}
+
+/* Highlight: hovered star + all stars to its right in DOM (= visually left, due to row-reverse) */
+.mpd-product-tabs #review_form #respond .stars:hover a,
+.mpd-tabs-accordion #review_form #respond .stars:hover a,
+.woocommerce-Tabs-panel--reviews #review_form #respond .stars:hover a {
+	color: #ddd;
 }
 
 .mpd-product-tabs #review_form #respond .stars a:hover,
-.mpd-product-tabs #review_form #respond .stars a.active,
+.mpd-product-tabs #review_form #respond .stars a:hover ~ a,
 .mpd-tabs-accordion #review_form #respond .stars a:hover,
-.mpd-tabs-accordion #review_form #respond .stars a.active,
+.mpd-tabs-accordion #review_form #respond .stars a:hover ~ a,
 .woocommerce-Tabs-panel--reviews #review_form #respond .stars a:hover,
-.woocommerce-Tabs-panel--reviews #review_form #respond .stars a.active {
+.woocommerce-Tabs-panel--reviews #review_form #respond .stars a:hover ~ a {
 	color: #ffc107;
-	transform: scale(1.2);
+	transform: scale(1.15);
+}
+
+/* Selected state (WooCommerce adds class on the selected star's parent span) */
+.mpd-product-tabs #review_form #respond .stars.selected a.active,
+.mpd-product-tabs #review_form #respond .stars.selected a.active ~ a,
+.mpd-tabs-accordion #review_form #respond .stars.selected a.active,
+.mpd-tabs-accordion #review_form #respond .stars.selected a.active ~ a,
+.woocommerce-Tabs-panel--reviews #review_form #respond .stars.selected a.active,
+.woocommerce-Tabs-panel--reviews #review_form #respond .stars.selected a.active ~ a {
+	color: #ffc107;
 }
 
 /* Form Comment Field */
