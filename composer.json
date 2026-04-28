@@ -1,0 +1,7 @@
+{
+    "name": "magical/products-display",
+    "type": "wordpress-plugin",
+    "require-dev": {
+        "yoast/phpunit-polyfills": "2.0"
+    }
+}
