@@ -1,0 +1,22 @@
+# Development dependencies
+node_modules/
+vendor/
+
+# Dev/build tools
+src/
+bin/
+tests/
+.circleci/
+.playwright-mcp/
+
+# Config files (dev only)
+.phpcs.xml.dist
+phpunit.xml.dist
+composer.lock
+package-lock.json
+
+# OS & editor files
+.DS_Store
+Thumbs.db
+*.log
+.env
