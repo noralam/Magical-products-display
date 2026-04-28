@@ -1806,10 +1806,16 @@
 .woocommerce-Tabs-panel--reviews #review_form #respond .stars {
 	margin: 0;
 	padding: 0;
+}
+
+/* WooCommerce wraps anchors in a <span> inside .stars.
+   row-reverse on the span makes stars display 1-2-3-4-5 left-to-right visually
+   while keeping DOM order 1→5, so `a:hover ~ a` (selects higher-numbered DOM
+   siblings = visually to the LEFT with row-reverse) fills all preceding stars. */
+.mpd-product-tabs #review_form #respond .stars span,
+.mpd-tabs-accordion #review_form #respond .stars span,
+.woocommerce-Tabs-panel--reviews #review_form #respond .stars span {
 	display: inline-flex;
-	/* row-reverse is required: stars are rendered right-to-left in DOM order so
-	   the CSS sibling selector (a:hover ~ a) fills all stars to the LEFT of
-	   the hovered/selected star. */
 	flex-direction: row-reverse;
 	justify-content: flex-end;
 	gap: 8px;
@@ -1836,8 +1842,8 @@
 }
 
 /* Fill all stars to the LEFT of hovered/active star.
-   Because flex-direction:row-reverse, DOM siblings that come AFTER the
-   hovered element are displayed to the LEFT — so ~ correctly targets them. */
+   With row-reverse on the span, DOM siblings that come AFTER (higher star number)
+   are displayed to the LEFT visually — so ~ correctly fills them. */
 .mpd-product-tabs #review_form #respond .stars a:hover ~ a,
 .mpd-product-tabs #review_form #respond .stars a.active ~ a,
 .mpd-tabs-accordion #review_form #respond .stars a:hover ~ a,
