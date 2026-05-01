@@ -232,6 +232,7 @@
 
 				if (productType === 'simple' || productType === 'subscription') {
 					e.preventDefault();
+					e.stopImmediatePropagation();
 					self.handleAddToCart($(this), $wrapper);
 				}
 			});
@@ -286,18 +287,26 @@
 			if (productId && formData.indexOf('add-to-cart=') === -1) {
 				formData += '&add-to-cart=' + productId;
 			}
-			// Append our custom action for admin-ajax.php
-			formData += '&action=mpd_single_add_to_cart';
-
 			// Add loading state
 			$btn.addClass('mpd-loading');
 			self.injectSpinner($btn);
 
-			var ajaxUrl = (typeof mpd_add_to_cart_params !== 'undefined' && mpd_add_to_cart_params.ajax_url)
-				? mpd_add_to_cart_params.ajax_url
-				: (typeof wc_add_to_cart_params !== 'undefined' && wc_add_to_cart_params.ajax_url)
-					? wc_add_to_cart_params.ajax_url
-					: '/wp-admin/admin-ajax.php';
+			// Prefer WooCommerce's wc-ajax endpoint — it fully bootstraps WC session/cart
+			// (required for multisite and guest users). Fall back to admin-ajax.php.
+			var ajaxUrl, useWcAjax = false;
+			if (typeof mpd_add_to_cart_params !== 'undefined' && mpd_add_to_cart_params.wc_ajax_url) {
+				ajaxUrl = mpd_add_to_cart_params.wc_ajax_url.replace('%%endpoint%%', 'mpd_single_add_to_cart');
+				useWcAjax = true;
+			} else if (typeof mpd_add_to_cart_params !== 'undefined' && mpd_add_to_cart_params.ajax_url) {
+				ajaxUrl = mpd_add_to_cart_params.ajax_url;
+			} else {
+				ajaxUrl = '/wp-admin/admin-ajax.php';
+			}
+
+			// admin-ajax.php needs an action param; wc-ajax endpoint does not
+			if (!useWcAjax) {
+				formData += '&action=mpd_single_add_to_cart';
+			}
 
 			$.ajax({
 				url: ajaxUrl,
@@ -323,6 +332,7 @@
 							$(key).replaceWith(value);
 						});
 					}
+					$(document.body).trigger('added_to_cart', [response.fragments, response.cart_hash, $btn]);
 					$(document.body).trigger('wc_fragments_refreshed');
 
 					// Show added state
@@ -370,17 +380,23 @@
 			if (productId && formData.indexOf('product_id=') === -1) {
 				formData += '&product_id=' + productId;
 			}
-			formData += '&action=mpd_single_add_to_cart';
-
 			// Add loading state
 			$btn.addClass('mpd-loading');
 			$btn.find('.mpd-btn-spinner').removeClass('mpd-spinner-hidden');
 
-			var ajaxUrl = (typeof mpd_add_to_cart_params !== 'undefined' && mpd_add_to_cart_params.ajax_url)
-				? mpd_add_to_cart_params.ajax_url
-				: (typeof wc_add_to_cart_params !== 'undefined' && wc_add_to_cart_params.ajax_url)
-					? wc_add_to_cart_params.ajax_url
-					: '/wp-admin/admin-ajax.php';
+			var ajaxUrl, useWcAjaxBN = false;
+			if (typeof mpd_add_to_cart_params !== 'undefined' && mpd_add_to_cart_params.wc_ajax_url) {
+				ajaxUrl = mpd_add_to_cart_params.wc_ajax_url.replace('%%endpoint%%', 'mpd_single_add_to_cart');
+				useWcAjaxBN = true;
+			} else if (typeof mpd_add_to_cart_params !== 'undefined' && mpd_add_to_cart_params.ajax_url) {
+				ajaxUrl = mpd_add_to_cart_params.ajax_url;
+			} else {
+				ajaxUrl = '/wp-admin/admin-ajax.php';
+			}
+
+			if (!useWcAjaxBN) {
+				formData += '&action=mpd_single_add_to_cart';
+			}
 
 			$.ajax({
 				url: ajaxUrl,
