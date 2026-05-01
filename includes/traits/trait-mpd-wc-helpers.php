@@ -110,21 +110,37 @@ trait WC_Helpers {
 		$preview_product_id = $this->get_preview_product_id();
 
 		if ( $preview_product_id ) {
+			// On multisite, bust the cache before fetching so editor shows fresh stock data.
+			if ( is_multisite() ) {
+				clean_post_cache( $preview_product_id );
+				wp_cache_delete( 'wc_product_' . $preview_product_id, 'products' );
+			}
 			$product = wc_get_product( $preview_product_id );
 			if ( $product ) {
 				return $product;
 			}
 		}
 
-		// Fallback: get the first published product.
+		// Fallback: get the first published in-stock product.
 		$products = wc_get_products( array(
-			'status' => 'publish',
-			'limit'  => 1,
-			'orderby' => 'date',
-			'order'  => 'DESC',
+			'status'       => 'publish',
+			'stock_status' => 'instock',
+			'limit'        => 1,
+			'orderby'      => 'date',
+			'order'        => 'DESC',
 		) );
 
 		if ( ! empty( $products ) ) {
+			// On multisite, bust the cache so editor shows fresh stock data.
+			if ( is_multisite() ) {
+				$pid = $products[0]->get_id();
+				clean_post_cache( $pid );
+				wp_cache_delete( 'wc_product_' . $pid, 'products' );
+				$fresh = wc_get_product( $pid );
+				if ( $fresh ) {
+					return $fresh;
+				}
+			}
 			return $products[0];
 		}
 
