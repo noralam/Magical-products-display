@@ -232,13 +232,10 @@
         handleAddedToCart: function (fragments, $button) {
             var self = this;
 
-            // Apply fragments (counter, subtotal, products-wrap, etc.)
+            // Apply any fragments not already replaced (e.g. from WC core AJAX add-to-cart)
             if (fragments && typeof fragments === 'object') {
                 $.each(fragments, function (key, value) {
-                    var $el = $(key);
-                    if ($el.length) {
-                        $el.replaceWith(value);
-                    }
+                    $(key).replaceWith(value);
                 });
             }
 
@@ -247,7 +244,9 @@
 
             // Animate the counter on each mini cart instance
             self.$miniCarts.each(function () {
-                var $counter = $(this).find('.mpd-mini-cart-counter');
+                var $cart = $(this);
+                var $counter = $cart.find('.mpd-mini-cart-counter');
+
                 if ($counter.length) {
                     $counter.addClass('mpd-pulse');
                     setTimeout(function () {

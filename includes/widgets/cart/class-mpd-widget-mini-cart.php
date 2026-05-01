@@ -1049,13 +1049,8 @@ class Mini_Cart extends Widget_Base {
 					</span>
 				<?php endif; ?>
 
-				<?php if ( $show_counter ) : ?>
-					<?php
-					// Always render the counter span so WooCommerce fragments can replace it.
-					// Hide via CSS class when cart is empty and hide_empty is set.
-					$counter_hidden = ( $cart_count === 0 && $hide_empty ) ? ' mpd-counter-hidden' : '';
-					?>
-					<span class="mpd-mini-cart-counter<?php echo esc_attr( $counter_hidden ); ?>" data-hide-empty="<?php echo $hide_empty ? 'yes' : 'no'; ?>"><?php echo esc_html( $cart_count ); ?></span>
+				<?php if ( $show_counter && ( $cart_count > 0 || ! $hide_empty ) ) : ?>
+					<span class="mpd-mini-cart-counter"><?php echo esc_html( $cart_count ); ?></span>
 				<?php endif; ?>
 
 				<?php if ( ! empty( $settings['cart_text'] ) ) : ?>

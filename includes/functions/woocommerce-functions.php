@@ -512,10 +512,6 @@ function mpd_single_product_add_to_cart() {
 }
 add_action( 'wp_ajax_mpd_single_add_to_cart', 'mpd_single_product_add_to_cart' );
 add_action( 'wp_ajax_nopriv_mpd_single_add_to_cart', 'mpd_single_product_add_to_cart' );
-// Also register on WooCommerce's wc-ajax endpoint (?wc-ajax=mpd_single_add_to_cart)
-// which fully bootstraps WC cart/session — required for multisite and guest users.
-add_action( 'wc_ajax_mpd_single_add_to_cart', 'mpd_single_product_add_to_cart' );
-add_action( 'wc_ajax_nopriv_mpd_single_add_to_cart', 'mpd_single_product_add_to_cart' );
 }
 
 /**
@@ -540,11 +536,7 @@ function mpd_add_mini_cart_fragments( $fragments ) {
 	$subtotal = $cart->get_cart_subtotal();
 
 	// Update counter badge.
-	// Preserve the hide-empty behaviour: only hide when count is 0 AND the span was configured to hide.
-	// Since we cannot access widget settings here, we reveal the counter whenever count > 0 and
-	// hide it (mpd-counter-hidden) only when count is 0 — JS will handle the data-hide-empty check.
-	$counter_hidden_class = $count === 0 ? ' mpd-counter-hidden' : '';
-	$fragments['.mpd-mini-cart-counter'] = '<span class="mpd-mini-cart-counter' . $counter_hidden_class . '" data-hide-empty="yes">' . esc_html( $count ) . '</span>';
+	$fragments['.mpd-mini-cart-counter'] = '<span class="mpd-mini-cart-counter">' . esc_html( $count ) . '</span>';
 
 	// Update subtotal text.
 	$fragments['.mpd-mini-cart-subtotal'] = '<span class="mpd-mini-cart-subtotal">' . wp_kses_post( $subtotal ) . '</span>';

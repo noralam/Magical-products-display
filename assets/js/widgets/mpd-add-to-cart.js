@@ -232,7 +232,6 @@
 
 				if (productType === 'simple' || productType === 'subscription') {
 					e.preventDefault();
-					e.stopImmediatePropagation();
 					self.handleAddToCart($(this), $wrapper);
 				}
 			});
@@ -269,6 +268,21 @@
 			});
 		},
 
+		buildAjaxFormData: function($form, $wrapper) {
+			var formData = $form.serializeArray().filter(function(field) {
+				return field.name !== 'add-to-cart';
+			});
+			var productId = $wrapper.data('product-id');
+
+			if (productId && !formData.some(function(field) { return field.name === 'product_id'; })) {
+				formData.push({ name: 'product_id', value: productId });
+			}
+
+			formData.push({ name: 'action', value: 'mpd_single_add_to_cart' });
+
+			return $.param(formData);
+		},
+
 		handleAddToCart: function($form, $wrapper) {
 			var self = this;
 			var $btn = $form.find('.single_add_to_cart_button');
@@ -278,35 +292,18 @@
 			// Already loading
 			if ($btn.hasClass('mpd-loading')) return;
 
-			// Build form data with required fields
-			var formData = $form.serialize();
-			var productId = $wrapper.data('product-id');
-			if (productId && formData.indexOf('product_id=') === -1) {
-				formData += '&product_id=' + productId;
-			}
-			if (productId && formData.indexOf('add-to-cart=') === -1) {
-				formData += '&add-to-cart=' + productId;
-			}
+			// Build form data for admin-ajax.php without add-to-cart to avoid WC's native handler adding first.
+			var formData = self.buildAjaxFormData($form, $wrapper);
+
 			// Add loading state
 			$btn.addClass('mpd-loading');
 			self.injectSpinner($btn);
 
-			// Prefer WooCommerce's wc-ajax endpoint — it fully bootstraps WC session/cart
-			// (required for multisite and guest users). Fall back to admin-ajax.php.
-			var ajaxUrl, useWcAjax = false;
-			if (typeof mpd_add_to_cart_params !== 'undefined' && mpd_add_to_cart_params.wc_ajax_url) {
-				ajaxUrl = mpd_add_to_cart_params.wc_ajax_url.replace('%%endpoint%%', 'mpd_single_add_to_cart');
-				useWcAjax = true;
-			} else if (typeof mpd_add_to_cart_params !== 'undefined' && mpd_add_to_cart_params.ajax_url) {
-				ajaxUrl = mpd_add_to_cart_params.ajax_url;
-			} else {
-				ajaxUrl = '/wp-admin/admin-ajax.php';
-			}
-
-			// admin-ajax.php needs an action param; wc-ajax endpoint does not
-			if (!useWcAjax) {
-				formData += '&action=mpd_single_add_to_cart';
-			}
+			var ajaxUrl = (typeof mpd_add_to_cart_params !== 'undefined' && mpd_add_to_cart_params.ajax_url)
+				? mpd_add_to_cart_params.ajax_url
+				: (typeof wc_add_to_cart_params !== 'undefined' && wc_add_to_cart_params.ajax_url)
+					? wc_add_to_cart_params.ajax_url
+					: '/wp-admin/admin-ajax.php';
 
 			$.ajax({
 				url: ajaxUrl,
@@ -326,11 +323,14 @@
 						return;
 					}
 
-					// Trigger WooCommerce added_to_cart event with the fragments from our AJAX response.
-					// wc-cart-fragments.js and mpd-mini-cart.js both listen to this and will apply
-					// the fragments and then fire wc_fragments_refreshed automatically — do NOT fire
-					// wc_fragments_refreshed manually here or WC will make a redundant admin-ajax.php call.
+					// Update WooCommerce cart fragments (mini-cart, cart count, etc.)
+					if (response.fragments) {
+						$.each(response.fragments, function(key, value) {
+							$(key).replaceWith(value);
+						});
+					}
 					$(document.body).trigger('added_to_cart', [response.fragments, response.cart_hash, $btn]);
+					$(document.body).trigger('wc_fragments_refreshed');
 
 					// Show added state
 					$btn.removeClass('mpd-loading').addClass('mpd-added');
@@ -371,29 +371,18 @@
 
 			if ($btn.hasClass('mpd-loading')) return;
 
-			// Build form data with required fields
-			var formData = $form.serialize();
-			var productId = $wrapper.data('product-id');
-			if (productId && formData.indexOf('product_id=') === -1) {
-				formData += '&product_id=' + productId;
-			}
+			// Build form data for admin-ajax.php without add-to-cart to avoid WC's native handler adding first.
+			var formData = self.buildAjaxFormData($form, $wrapper);
+
 			// Add loading state
 			$btn.addClass('mpd-loading');
 			$btn.find('.mpd-btn-spinner').removeClass('mpd-spinner-hidden');
 
-			var ajaxUrl, useWcAjaxBN = false;
-			if (typeof mpd_add_to_cart_params !== 'undefined' && mpd_add_to_cart_params.wc_ajax_url) {
-				ajaxUrl = mpd_add_to_cart_params.wc_ajax_url.replace('%%endpoint%%', 'mpd_single_add_to_cart');
-				useWcAjaxBN = true;
-			} else if (typeof mpd_add_to_cart_params !== 'undefined' && mpd_add_to_cart_params.ajax_url) {
-				ajaxUrl = mpd_add_to_cart_params.ajax_url;
-			} else {
-				ajaxUrl = '/wp-admin/admin-ajax.php';
-			}
-
-			if (!useWcAjaxBN) {
-				formData += '&action=mpd_single_add_to_cart';
-			}
+			var ajaxUrl = (typeof mpd_add_to_cart_params !== 'undefined' && mpd_add_to_cart_params.ajax_url)
+				? mpd_add_to_cart_params.ajax_url
+				: (typeof wc_add_to_cart_params !== 'undefined' && wc_add_to_cart_params.ajax_url)
+					? wc_add_to_cart_params.ajax_url
+					: '/wp-admin/admin-ajax.php';
 
 			$.ajax({
 				url: ajaxUrl,
