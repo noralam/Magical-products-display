@@ -540,7 +540,11 @@ function mpd_add_mini_cart_fragments( $fragments ) {
 	$subtotal = $cart->get_cart_subtotal();
 
 	// Update counter badge.
-	$fragments['.mpd-mini-cart-counter'] = '<span class="mpd-mini-cart-counter">' . esc_html( $count ) . '</span>';
+	// Preserve the hide-empty behaviour: only hide when count is 0 AND the span was configured to hide.
+	// Since we cannot access widget settings here, we reveal the counter whenever count > 0 and
+	// hide it (mpd-counter-hidden) only when count is 0 — JS will handle the data-hide-empty check.
+	$counter_hidden_class = $count === 0 ? ' mpd-counter-hidden' : '';
+	$fragments['.mpd-mini-cart-counter'] = '<span class="mpd-mini-cart-counter' . $counter_hidden_class . '" data-hide-empty="yes">' . esc_html( $count ) . '</span>';
 
 	// Update subtotal text.
 	$fragments['.mpd-mini-cart-subtotal'] = '<span class="mpd-mini-cart-subtotal">' . wp_kses_post( $subtotal ) . '</span>';

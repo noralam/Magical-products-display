@@ -326,14 +326,11 @@
 						return;
 					}
 
-					// Update WooCommerce cart fragments (mini-cart, cart count, etc.)
-					if (response.fragments) {
-						$.each(response.fragments, function(key, value) {
-							$(key).replaceWith(value);
-						});
-					}
+					// Trigger WooCommerce added_to_cart event with the fragments from our AJAX response.
+					// wc-cart-fragments.js and mpd-mini-cart.js both listen to this and will apply
+					// the fragments and then fire wc_fragments_refreshed automatically — do NOT fire
+					// wc_fragments_refreshed manually here or WC will make a redundant admin-ajax.php call.
 					$(document.body).trigger('added_to_cart', [response.fragments, response.cart_hash, $btn]);
-					$(document.body).trigger('wc_fragments_refreshed');
 
 					// Show added state
 					$btn.removeClass('mpd-loading').addClass('mpd-added');
