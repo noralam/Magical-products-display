@@ -3,7 +3,7 @@ Contributors: nalam
 Donate link: https://wpthemespace.com/donation/
 Tags: woocommerce builder, elementor woocommerce, product page builder, checkout builder, shop builder
 Requires at least: 6.0
-Tested up to: 6.9
+Tested up to: 7.0
 Requires PHP: 7.4
 Stable tag: trunk
 WC requires at least: 8.0
@@ -385,6 +385,19 @@ Please use the WordPress.org support forum or contact us directly at [wpthemespa
 10. Advanced AJAX Search - Real-time product search with filters
 
 == Changelog ==
+
+= 2.0.2 - May 1, 2026 =
+* Security: Added nonce verification to AJAX add-to-cart handler
+* Security: Checkout nonce name aligned across enqueue and AJAX handler
+* Security: Layout REST API endpoints now require authentication by default
+* Security: Added wp_unslash() before sanitization in AJAX search handler
+* Fixed: Mini cart dropdown now shows View Cart and Checkout buttons immediately after AJAX add-to-cart (no page refresh needed)
+* Fixed: WooCommerce session loaded correctly via wc_load_cart() in checkout and cart quantity AJAX handlers
+* Fixed: Variation attributes now forwarded correctly in legacy AJAX add-to-cart handler
+* Fixed: Products tab AJAX settings clamped and whitelisted to prevent out-of-range values
+* Fixed: Wishlist and compare product thumbnail/price output properly escaped
+* Improved: Pro-only controls in Add to Cart widget now hidden from free users
+* Improved: Added WordPress Coding Standards and PHP compatibility tooling to dev dependencies
 
 = 2.0.1 - March 11, 2026 =
 * Fixed: Shop/Archive template enable/disable toggle not working

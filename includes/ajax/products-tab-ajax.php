@@ -34,10 +34,18 @@ class MPD_Products_Tab_Ajax
 
         // Get and sanitize parameters
         $category_slug = isset($_POST['category_slug']) ? sanitize_text_field(wp_unslash($_POST['category_slug'])) : '';
-        $settings = isset($_POST['settings']) ? self::sanitize_settings(wp_unslash($_POST['settings'])) : [];
+        $widget_id = isset($_POST['widget_id']) ? sanitize_text_field(wp_unslash($_POST['widget_id'])) : '';
+        $post_id = isset($_POST['post_id']) ? absint($_POST['post_id']) : 0;
 
-        if (empty($category_slug)) {
+        if (empty($category_slug) || empty($widget_id) || empty($post_id)) {
             wp_send_json_error(['message' => __('Category not specified', 'magical-products-display')]);
+            return;
+        }
+
+        $settings = self::get_widget_settings($post_id, $widget_id);
+
+        if (empty($settings)) {
+            wp_send_json_error(['message' => __('Widget settings not found', 'magical-products-display')]);
             return;
         }
 
@@ -71,6 +79,70 @@ class MPD_Products_Tab_Ajax
             }
         }
         return $sanitized;
+    }
+
+    /**
+     * Load trusted widget settings from the saved Elementor document.
+     */
+    private static function get_widget_settings($post_id, $widget_id)
+    {
+        if (!self::is_public_widget_context($post_id) || !class_exists('\Elementor\Plugin')) {
+            return [];
+        }
+
+        $document = \Elementor\Plugin::$instance->documents->get($post_id);
+
+        if (!$document) {
+            return [];
+        }
+
+        $elements = $document->get_elements_data();
+        $settings = self::find_widget_settings($elements, $widget_id);
+
+        return is_array($settings) ? self::sanitize_settings($settings) : [];
+    }
+
+    /**
+     * Find widget settings recursively.
+     */
+    private static function find_widget_settings($elements, $widget_id)
+    {
+        foreach ($elements as $element) {
+            if (
+                isset($element['id'], $element['widgetType']) &&
+                $element['id'] === $widget_id &&
+                'mg_products_tab' === $element['widgetType']
+            ) {
+                return isset($element['settings']) ? $element['settings'] : [];
+            }
+
+            if (!empty($element['elements']) && is_array($element['elements'])) {
+                $found = self::find_widget_settings($element['elements'], $widget_id);
+                if (!empty($found)) {
+                    return $found;
+                }
+            }
+        }
+
+        return [];
+    }
+
+    /**
+     * Restrict anonymous access to published documents only.
+     */
+    private static function is_public_widget_context($post_id)
+    {
+        $post = get_post($post_id);
+
+        if (!$post) {
+            return false;
+        }
+
+        if ('publish' === $post->post_status) {
+            return true;
+        }
+
+        return is_user_logged_in() && current_user_can('edit_post', $post_id);
     }
 
     /**
@@ -125,6 +197,14 @@ class MPD_Products_Tab_Ajax
         ];
 
         $settings = wp_parse_args($settings, $defaults);
+
+        $settings['bsktab_products_count'] = max(1, min(24, absint($settings['bsktab_products_count'])));
+        $settings['mgpdeg_rownumber'] = self::sanitize_grid_column($settings['mgpdeg_rownumber'], '4');
+        $settings['mgpdeg_rownumber_tab'] = self::sanitize_grid_column($settings['mgpdeg_rownumber_tab'], '6');
+        $settings['mgpdeg_rownumber_mob'] = self::sanitize_grid_column($settings['mgpdeg_rownumber_mob'], '12');
+        $settings['mgpdeg_product_style'] = in_array($settings['mgpdeg_product_style'], ['1', '2', '3'], true) ? $settings['mgpdeg_product_style'] : '1';
+        $settings['mgpdeg_btn_type'] = in_array($settings['mgpdeg_btn_type'], ['cart', 'details'], true) ? $settings['mgpdeg_btn_type'] : 'cart';
+        $settings['mgpdeg_title_tag'] = in_array($settings['mgpdeg_title_tag'], ['h1', 'h2', 'h3', 'h4', 'h5', 'h6', 'div', 'span', 'p'], true) ? $settings['mgpdeg_title_tag'] : 'h2';
 
         // Extract settings
         $bsktab_products_count = intval($settings['bsktab_products_count']);
@@ -211,7 +291,7 @@ class MPD_Products_Tab_Ajax
                                         </a>
                                         <?php if ($settings['mgpdeg_adicons_show'] && get_option('mgppro_is_active', 'no') == 'yes') : ?>
                                             <div class="mgp-exicons exicons-<?php echo esc_attr($settings['mgpdeg_adicons_position']); ?>">
-                                                <?php do_action('mgproducts_pro_advance_icons', $mgpdeg_wishlist_show, $mgpdeg_wishlist_text, $mgpdeg_share_show, $mgpdeg_share_text, $mgpdeg_video_show, $mgpdeg_video_text, $mgpdeg_qrcode_show, $mgpdeg_qrcode_text); ?>
+                                                <?php do_action('mgshop_builder_pro_advance_icons', $mgpdeg_wishlist_show, $mgpdeg_wishlist_text, $mgpdeg_share_show, $mgpdeg_share_text, $mgpdeg_video_show, $mgpdeg_video_text, $mgpdeg_qrcode_show, $mgpdeg_qrcode_text); ?>
                                             </div>
                                         <?php endif; ?>
                                     </figure>
@@ -365,6 +445,15 @@ class MPD_Products_Tab_Ajax
             ?>
         </div>
         <?php
+    }
+
+    /**
+     * Sanitize Bootstrap grid column values.
+     */
+    private static function sanitize_grid_column($value, $default)
+    {
+        $value = (string) absint($value);
+        return in_array($value, ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12'], true) ? $value : $default;
     }
 }
 

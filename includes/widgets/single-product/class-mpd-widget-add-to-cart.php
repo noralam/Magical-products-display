@@ -194,16 +194,16 @@ class Add_To_Cart extends Widget_Base {
 
 		if ( ! $this->is_pro() ) {
 			$this->add_pro_notice( 'pro_features_notice', __( 'Quantity Style, Sticky Cart & More', 'magical-products-display' ) );
-		}
+		} else {
 			$this->add_control(
 				'quantity_style',
 				array(
 					'label'   => __( 'Quantity Style', 'magical-products-display' ),
 					'type'    => Controls_Manager::SELECT,
 					'options' => array(
-						'default' => __( 'Default', 'magical-products-display' ),
-						'modern'  => __( 'Modern (+/-)', 'magical-products-display' ),
-						'buttons' => __( 'Buttons', 'magical-products-display' ),
+						'default'  => __( 'Default', 'magical-products-display' ),
+						'modern'   => __( 'Modern (+/-)', 'magical-products-display' ),
+						'buttons'  => __( 'Buttons', 'magical-products-display' ),
 						'dropdown' => __( 'Dropdown', 'magical-products-display' ),
 					),
 					'default' => 'default',
@@ -336,6 +336,7 @@ class Add_To_Cart extends Widget_Base {
 					),
 				)
 			);
+		}
 
 		$this->end_controls_section();
 	}
@@ -1011,6 +1012,7 @@ class Add_To_Cart extends Widget_Base {
 		$this->add_render_attribute( 'wrapper', 'data-product-id', $product->get_id() );
 		$this->add_render_attribute( 'wrapper', 'data-product-type', $product->get_type() );
 		$this->add_render_attribute( 'wrapper', 'data-show-view-cart', 'yes' );
+		$this->add_render_attribute( 'wrapper', 'data-nonce', wp_create_nonce( 'mpd_single_add_to_cart' ) );
 
 		$view_cart_text = ! empty( $settings['view_cart_text'] ) ? $settings['view_cart_text'] : __( 'View Cart', 'magical-products-display' );
 		$this->add_render_attribute( 'wrapper', 'data-view-cart-text', esc_attr( $view_cart_text ) );

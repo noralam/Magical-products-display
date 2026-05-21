@@ -273,12 +273,20 @@
 				return field.name !== 'add-to-cart';
 			});
 			var productId = $wrapper.data('product-id');
+			var nonce = $wrapper.data('nonce') || (
+				typeof mpd_add_to_cart_params !== 'undefined' && mpd_add_to_cart_params.nonce
+					? mpd_add_to_cart_params.nonce
+					: ''
+			);
 
 			if (productId && !formData.some(function(field) { return field.name === 'product_id'; })) {
 				formData.push({ name: 'product_id', value: productId });
 			}
 
 			formData.push({ name: 'action', value: 'mpd_single_add_to_cart' });
+			if (nonce) {
+				formData.push({ name: 'nonce', value: nonce });
+			}
 
 			return $.param(formData);
 		},

@@ -415,8 +415,24 @@ if ( ! function_exists( 'mpd_ajax_add_to_cart' ) ) {
 function mpd_ajax_add_to_cart() {
 	check_ajax_referer( 'mpd_add_to_cart', 'nonce' );
 
+	if ( function_exists( 'wc_load_cart' ) && function_exists( 'WC' ) && WC() && ! WC()->cart ) {
+		wc_load_cart();
+	}
+
+	if ( ! function_exists( 'WC' ) || ! WC() || ! WC()->cart ) {
+		wp_send_json_error( array( 'message' => __( 'Cart not available.', 'magical-products-display' ) ) );
+	}
+
 	$product_id = isset( $_POST['product_id'] ) ? absint( $_POST['product_id'] ) : 0;
 	$quantity   = isset( $_POST['quantity'] ) ? absint( $_POST['quantity'] ) : 1;
+	$variation_id = ! empty( $_POST['variation_id'] ) ? absint( $_POST['variation_id'] ) : 0;
+	$variations   = array();
+
+	foreach ( $_POST as $key => $value ) { // phpcs:ignore WordPress.Security.NonceVerification.Missing -- Nonce verified above.
+		if ( 0 === strpos( $key, 'attribute_' ) ) {
+			$variations[ sanitize_title( wp_unslash( $key ) ) ] = sanitize_text_field( wp_unslash( $value ) );
+		}
+	}
 
 	if ( ! $product_id ) {
 		wp_send_json_error( array( 'message' => __( 'Invalid product.', 'magical-products-display' ) ) );
@@ -428,7 +444,7 @@ function mpd_ajax_add_to_cart() {
 		wp_send_json_error( array( 'message' => __( 'Product not found.', 'magical-products-display' ) ) );
 	}
 
-	$added = WC()->cart->add_to_cart( $product_id, $quantity );
+	$added = WC()->cart->add_to_cart( $product_id, $quantity, $variation_id, $variations );
 
 	if ( $added ) {
 		wp_send_json_success(
@@ -457,6 +473,17 @@ add_action( 'wp_ajax_nopriv_mpd_add_to_cart', 'mpd_ajax_add_to_cart' );
  */
 if ( ! function_exists( 'mpd_single_product_add_to_cart' ) ) {
 function mpd_single_product_add_to_cart() {
+	check_ajax_referer( 'mpd_single_add_to_cart', 'nonce' );
+
+	if ( function_exists( 'wc_load_cart' ) && function_exists( 'WC' ) && WC() && ! WC()->cart ) {
+		wc_load_cart();
+	}
+
+	if ( ! function_exists( 'WC' ) || ! WC() || ! WC()->cart ) {
+		wp_send_json( array( 'error' => true, 'notices' => esc_html__( 'Cart not available.', 'magical-products-display' ) ) );
+		return;
+	}
+
 	$product_id = isset( $_POST['product_id'] ) ? absint( $_POST['product_id'] ) : 0;
 
 	// Fallback: WC variable form uses add-to-cart hidden input for the parent product ID.
@@ -469,7 +496,7 @@ function mpd_single_product_add_to_cart() {
 	$variations   = array();
 
 	// Collect attribute_* fields for variable products.
-	foreach ( $_POST as $key => $value ) { // phpcs:ignore WordPress.Security.NonceVerification.Missing
+	foreach ( $_POST as $key => $value ) { // phpcs:ignore WordPress.Security.NonceVerification.Missing -- Nonce verified above.
 		if ( strpos( $key, 'attribute_' ) === 0 ) {
 			$variations[ sanitize_title( wp_unslash( $key ) ) ] = sanitize_text_field( wp_unslash( $value ) );
 		}
@@ -588,6 +615,11 @@ function mpd_add_mini_cart_fragments( $fragments ) {
 		echo '</div>';
 
 		echo '<div class="mpd-mini-cart-subtotal-row"><strong>' . esc_html__( 'Subtotal:', 'magical-products-display' ) . '</strong><span>' . wp_kses_post( $cart->get_cart_subtotal() ) . '</span></div>';
+
+		echo '<div class="mpd-mini-cart-buttons">';
+		echo '<a href="' . esc_url( wc_get_cart_url() ) . '" class="button view-cart">' . esc_html__( 'View Cart', 'magical-products-display' ) . '</a>';
+		echo '<a href="' . esc_url( wc_get_checkout_url() ) . '" class="button checkout">' . esc_html__( 'Checkout', 'magical-products-display' ) . '</a>';
+		echo '</div>';
 		echo '</div>';
 	}
 	$fragments['.mpd-mini-cart-products-wrap'] = ob_get_clean();
@@ -747,10 +779,10 @@ function mpd_ajax_get_wishlist_items() {
 		
 		$html .= '<div class="mpd-header-wc-item-row" data-product-id="' . esc_attr( $product_id ) . '">';
 		$html .= '<a href="' . esc_url( $permalink ) . '" class="mpd-header-wc-item-link">';
-		$html .= '<span class="mpd-header-wc-item-image">' . $thumbnail . '</span>';
+		$html .= '<span class="mpd-header-wc-item-image">' . wp_kses_post( $thumbnail ) . '</span>';
 		$html .= '<span class="mpd-header-wc-item-details">';
 		$html .= '<span class="mpd-header-wc-item-name">' . esc_html( $title ) . '</span>';
-		$html .= '<span class="mpd-header-wc-item-price">' . $price . '</span>';
+		$html .= '<span class="mpd-header-wc-item-price">' . wp_kses_post( $price ) . '</span>';
 		$html .= '</span>';
 		$html .= '</a>';
 		$html .= '<button type="button" class="mpd-header-wc-remove-item" data-product-id="' . esc_attr( $product_id ) . '" title="' . esc_attr__( 'Remove', 'magical-products-display' ) . '"><i class="eicon-close"></i></button>';
@@ -802,10 +834,10 @@ function mpd_ajax_get_compare_items() {
 		
 		$html .= '<div class="mpd-header-wc-item-row" data-product-id="' . esc_attr( $product_id ) . '">';
 		$html .= '<a href="' . esc_url( $permalink ) . '" class="mpd-header-wc-item-link">';
-		$html .= '<span class="mpd-header-wc-item-image">' . $thumbnail . '</span>';
+		$html .= '<span class="mpd-header-wc-item-image">' . wp_kses_post( $thumbnail ) . '</span>';
 		$html .= '<span class="mpd-header-wc-item-details">';
 		$html .= '<span class="mpd-header-wc-item-name">' . esc_html( $title ) . '</span>';
-		$html .= '<span class="mpd-header-wc-item-price">' . $price . '</span>';
+		$html .= '<span class="mpd-header-wc-item-price">' . wp_kses_post( $price ) . '</span>';
 		$html .= '</span>';
 		$html .= '</a>';
 		$html .= '<button type="button" class="mpd-header-compare-remove-item" data-product-id="' . esc_attr( $product_id ) . '" title="' . esc_attr__( 'Remove', 'magical-products-display' ) . '"><i class="eicon-close"></i></button>';

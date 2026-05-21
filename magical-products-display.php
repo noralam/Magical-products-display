@@ -3,7 +3,7 @@
  * Plugin Name:       Magical Shop Builder
  * Plugin URI:        https://wpthemespace.com/magical-shop-builder
  * Description:       Complete WooCommerce Shop Builder with Elementor - Build custom product pages, cart, checkout, my-account, Thank you page and more.
- * Version:           2.0.1
+ * Version:           2.0.4
  * Author:            Noor alam
  * Author URI:        https://wpthemespace.com
  * License:           GPL-2.0+
@@ -39,7 +39,7 @@ final class Magical_Shop_Builder {
 	 *
 	 * @var string The plugin version.
 	 */
-	const VERSION = '2.0.1';
+	const VERSION = '2.0.4';
 
 	/**
 	 * Minimum Elementor Version
@@ -394,7 +394,7 @@ final class Magical_Shop_Builder {
 			$magial_eactive_url = wp_nonce_url( 'plugins.php?action=activate&plugin=elementor/elementor.php&plugin_status=all&paged=1', 'activate-plugin_elementor/elementor.php' );
 			$message = sprintf(
 				/* translators: 1: Plugin name 2: Elementor 3: Elementor installation link */
-				esc_html__( '%1$s requires %2$s plugin, which is currently NOT RUNNING  %3$s', 'magical-products-display' ),
+				esc_html__( '%1$s requires %2$s plugin, which is currently not running. %3$s', 'magical-products-display' ),
 				'<strong>' . esc_html__( 'Magical Shop Builder', 'magical-products-display' ) . '</strong>',
 				'<strong>' . esc_html__( 'Elementor', 'magical-products-display' ) . '</strong>',
 				'<a class="button button-primary" style="margin-left:20px" href="' . esc_url( $magial_eactive_url ) . '">' . esc_html__( 'Activate Elementor', 'magical-products-display' ) . '</a>'
@@ -403,7 +403,7 @@ final class Magical_Shop_Builder {
 			$magial_einstall_url = wp_nonce_url( self_admin_url( 'update.php?action=install-plugin&plugin=elementor' ), 'install-plugin_elementor' );
 			$message = sprintf(
 				/* translators: 1: Plugin name 2: Elementor 3: Elementor installation link */
-				esc_html__( '%1$s requires %2$s plugin, which is currently NOT RUNNING  %3$s', 'magical-products-display' ),
+				esc_html__( '%1$s requires %2$s plugin, which is currently not running. %3$s', 'magical-products-display' ),
 				'<strong>' . esc_html__( 'Magical Shop Builder', 'magical-products-display' ) . '</strong>',
 				'<strong>' . esc_html__( 'Elementor', 'magical-products-display' ) . '</strong>',
 				'<a class="button button-primary" style="margin-left:20px" href="' . esc_url( $magial_einstall_url ) . '">' . esc_html__( 'Install Elementor', 'magical-products-display' ) . '</a>'
@@ -427,7 +427,7 @@ final class Magical_Shop_Builder {
 			$magial_eactive_url = wp_nonce_url( 'plugins.php?action=activate&plugin=woocommerce/woocommerce.php&plugin_status=all&paged=1', 'activate-plugin_woocommerce/woocommerce.php' );
 			$message = sprintf(
 				/* translators: 1: Plugin name 2: WooCommerce 3: WooCommerce installation link */
-				esc_html__( '%1$s requires %2$s plugin, which is currently NOT RUNNING  %3$s', 'magical-products-display' ),
+				esc_html__( '%1$s requires %2$s plugin, which is currently not running. %3$s', 'magical-products-display' ),
 				'<strong>' . esc_html__( 'Magical Shop Builder', 'magical-products-display' ) . '</strong>',
 				'<strong>' . esc_html__( 'WooCommerce', 'magical-products-display' ) . '</strong>',
 				'<a class="button button-primary" style="margin-left:20px" href="' . esc_url( $magial_eactive_url ) . '">' . esc_html__( 'Activate WooCommerce', 'magical-products-display' ) . '</a>'
@@ -436,7 +436,7 @@ final class Magical_Shop_Builder {
 			$magial_einstall_url = wp_nonce_url( self_admin_url( 'update.php?action=install-plugin&plugin=woocommerce' ), 'install-plugin_woocommerce' );
 			$message = sprintf(
 				/* translators: 1: Plugin name 2: WooCommerce 3: WooCommerce installation link */
-				esc_html__( '%1$s requires %2$s plugin, which is currently NOT RUNNING  %3$s', 'magical-products-display' ),
+				esc_html__( '%1$s requires %2$s plugin, which is currently not running. %3$s', 'magical-products-display' ),
 				'<strong>' . esc_html__( 'Magical Shop Builder', 'magical-products-display' ) . '</strong>',
 				'<strong>' . esc_html__( 'WooCommerce', 'magical-products-display' ) . '</strong>',
 				'<a class="button button-primary" style="margin-left:20px" href="' . esc_url( $magial_einstall_url ) . '">' . esc_html__( 'Install WooCommerce', 'magical-products-display' ) . '</a>'

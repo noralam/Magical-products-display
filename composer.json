@@ -2,6 +2,12 @@
     "name": "magical/products-display",
     "type": "wordpress-plugin",
     "require-dev": {
+        "wp-coding-standards/wpcs": "^3.1",
+        "phpcompatibility/phpcompatibility-wp": "^2.1",
         "yoast/phpunit-polyfills": "2.0"
+    },
+    "scripts": {
+        "lint": "phpcs --standard=WordPress --extensions=php --ignore=vendor,node_modules,build .",
+        "lint:compat": "phpcs --standard=PHPCompatibilityWP --runtime-set testVersion 7.4- --extensions=php --ignore=vendor,node_modules,build ."
     }
 }
