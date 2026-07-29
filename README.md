@@ -7,7 +7,7 @@
 [![Elementor](https://img.shields.io/badge/Elementor-Compatible-e2003b?logo=elementor)](https://elementor.com)
 [![PHP](https://img.shields.io/badge/PHP-7.4%2B-777bb4?logo=php)](https://php.net)
 [![License](https://img.shields.io/badge/License-GPL%20v2-green)](http://www.gnu.org/licenses/gpl-2.0.html)
-[![Version](https://img.shields.io/badge/Version-2.0.1-brightgreen)](https://wpthemespace.com/product/magical-shop-builder/)
+[![Version](https://img.shields.io/badge/Version-2.0.5-brightgreen)](https://wpthemespace.com/product/magical-shop-builder/)
 
 ---
 

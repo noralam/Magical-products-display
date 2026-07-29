@@ -386,6 +386,10 @@ Please use the WordPress.org support forum or contact us directly at [wpthemespa
 
 == Changelog ==
 
+= 2.0.5 - July 29, 2026 =
+* Fixed: Create New Template modal type selection grid missing CSS - added radio-button style with visual selected indicator
+* Fixed: Template modal type options now properly styled with hover/selected states
+
 = 2.0.4 - July 29, 2026 =
 * Fixed: Advance icon click failures and improved plugin stability
 * Fixed: Double add-to-cart on simple products
