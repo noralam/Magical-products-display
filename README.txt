@@ -388,6 +388,7 @@ Please use the WordPress.org support forum or contact us directly at [wpthemespa
 
 = 2.0.6 - August 19, 2026 =
 * Fixed: Shop archive custom template pagination missing on frontend
+* Fixed: Lost Password confirmation message not showing issue
 * Improved: Modernized visual styling across Cart widgets with controlled 3-4px border radius
 * Improved: Overhauled Checkout page widgets (forms, payment methods, order review, notices)
 * Fixed: Checkout payment method radio button and label alignment on the same line
