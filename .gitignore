@@ -20,3 +20,7 @@ package-lock.json
 Thumbs.db
 *.log
 .env
+.cursor/
+.codex/
+.vscode/
+.idea/
