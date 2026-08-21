@@ -924,6 +924,8 @@ class Upsells extends Widget_Base {
 			$layout_mode = $settings['layout_mode'];
 		}
 
+		$placeholder_img = function_exists( 'wc_placeholder_img_src' ) ? wc_placeholder_img_src( 'woocommerce_thumbnail' ) : '';
+
 		// Demo product data.
 		$demo_products = array(
 			array(
@@ -931,42 +933,42 @@ class Upsells extends Widget_Base {
 				'price'    => '$149.99',
 				'sale'     => '$129.99',
 				'rating'   => 4.5,
-				'image'    => 'https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=300&h=300&fit=crop',
+				'image'    => $placeholder_img,
 			),
 			array(
 				'name'     => __( 'Smart Watch Pro', 'magical-products-display' ),
 				'price'    => '$299.99',
 				'sale'     => '',
 				'rating'   => 5,
-				'image'    => 'https://images.unsplash.com/photo-1523275335684-37898b6baf30?w=300&h=300&fit=crop',
+				'image'    => $placeholder_img,
 			),
 			array(
 				'name'     => __( 'Portable Bluetooth Speaker', 'magical-products-display' ),
 				'price'    => '$79.99',
 				'sale'     => '$59.99',
 				'rating'   => 4,
-				'image'    => 'https://images.unsplash.com/photo-1608043152269-423dbba4e7e1?w=300&h=300&fit=crop',
+				'image'    => $placeholder_img,
 			),
 			array(
 				'name'     => __( 'Wireless Charging Pad', 'magical-products-display' ),
 				'price'    => '$39.99',
 				'sale'     => '',
 				'rating'   => 4.5,
-				'image'    => 'https://images.unsplash.com/photo-1586953208448-b95a79798f07?w=300&h=300&fit=crop',
+				'image'    => $placeholder_img,
 			),
 			array(
 				'name'     => __( 'USB-C Hub Adapter', 'magical-products-display' ),
 				'price'    => '$69.99',
 				'sale'     => '$54.99',
 				'rating'   => 4,
-				'image'    => 'https://images.unsplash.com/photo-1625723044792-44de16ccb4e9?w=300&h=300&fit=crop',
+				'image'    => $placeholder_img,
 			),
 			array(
 				'name'     => __( 'Mechanical Keyboard', 'magical-products-display' ),
 				'price'    => '$129.99',
 				'sale'     => '',
 				'rating'   => 5,
-				'image'    => 'https://images.unsplash.com/photo-1511467687858-23d96c32e4ae?w=300&h=300&fit=crop',
+				'image'    => $placeholder_img,
 			),
 		);
 
