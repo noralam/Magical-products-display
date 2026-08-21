@@ -2959,10 +2959,12 @@
 .mpd-product-tabs table.shop_attributes th,
 .mpd-product-tabs table.woocommerce-product-attributes th,
 .mpd-tabs-accordion table.shop_attributes th,
-.woocommerce-Tabs-panel--additional_information table.shop_attributes th {
+.woocommerce .mpd-product-tabs table.shop_attributes th,
+.woocommerce-Tabs-panel--additional_information table.shop_attributes th,
+.woocommerce-Tabs-panel--additional_information table.woocommerce-product-attributes th {
 	width: 25%;
-	min-width: 130px;
-	padding: 13px 20px;
+	min-width: 140px;
+	padding: 14px 20px !important;
 	font-size: 14px;
 	font-weight: 600;
 	line-height: 1.5;
@@ -2978,8 +2980,11 @@
 .mpd-product-tabs table.shop_attributes td,
 .mpd-product-tabs table.woocommerce-product-attributes td,
 .mpd-tabs-accordion table.shop_attributes td,
-.woocommerce-Tabs-panel--additional_information table.shop_attributes td {
-	padding: 13px 20px;
+.woocommerce .mpd-product-tabs table.shop_attributes td,
+.woocommerce-Tabs-panel--additional_information table.shop_attributes td,
+.woocommerce-Tabs-panel--additional_information table.woocommerce-product-attributes td {
+	padding: 14px 24px !important;
+	padding-left: 28px !important;
 	font-size: 14px;
 	font-weight: 400;
 	font-style: normal !important;
@@ -3003,15 +3008,19 @@
 
 .mpd-product-tabs table.shop_attributes td p,
 .mpd-product-tabs table.woocommerce-product-attributes td p,
-.woocommerce-Tabs-panel--additional_information table.shop_attributes td p {
-	margin: 0;
-	padding: 0;
+.woocommerce .mpd-product-tabs table.shop_attributes td p,
+.woocommerce-Tabs-panel--additional_information table.shop_attributes td p,
+.woocommerce-Tabs-panel--additional_information table.woocommerce-product-attributes td p {
+	margin: 0 !important;
+	padding: 0 !important;
 	font-style: normal !important;
 	color: inherit;
+	line-height: inherit;
 }
 
 .mpd-product-tabs table.shop_attributes td a,
 .mpd-product-tabs table.woocommerce-product-attributes td a,
+.woocommerce .mpd-product-tabs table.shop_attributes td a,
 .woocommerce-Tabs-panel--additional_information table.shop_attributes td a {
 	color: #0f172a;
 	text-decoration: none;
