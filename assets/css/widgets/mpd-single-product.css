@@ -2908,8 +2908,122 @@
 .mpd-product-tabs .woocommerce-tabs .panel h2,
 .mpd-product-tabs .wc-tab h2 {
 	margin-top: 0;
-	margin-bottom: 15px;
-	font-size: 1.3em;
+	margin-bottom: 16px;
+	font-size: 1.25rem;
+	font-weight: 700;
+	color: #0f172a;
+	letter-spacing: -0.01em;
+}
+
+/* ==========================================================================
+   Additional Information Attributes Table in Product Tabs
+   ========================================================================== */
+.mpd-product-tabs table.shop_attributes,
+.mpd-product-tabs table.woocommerce-product-attributes,
+.mpd-tabs-accordion table.shop_attributes,
+.woocommerce-Tabs-panel--additional_information table.shop_attributes,
+.woocommerce-Tabs-panel--additional_information table.woocommerce-product-attributes {
+	width: 100%;
+	max-width: 100%;
+	border-collapse: separate;
+	border-spacing: 0;
+	margin: 12px 0 0 0;
+	border: 1px solid #e2e8f0;
+	border-radius: 8px;
+	overflow: hidden;
+	background: #ffffff;
+}
+
+.mpd-product-tabs table.shop_attributes tr,
+.mpd-product-tabs table.woocommerce-product-attributes tr,
+.mpd-tabs-accordion table.shop_attributes tr,
+.woocommerce-Tabs-panel--additional_information table.shop_attributes tr {
+	border: none;
+	border-bottom: 1px solid #e2e8f0;
+	background: transparent;
+	transition: background 0.2s ease;
+}
+
+.mpd-product-tabs table.shop_attributes tr:nth-child(even),
+.mpd-product-tabs table.woocommerce-product-attributes tr:nth-child(even),
+.woocommerce-Tabs-panel--additional_information table.shop_attributes tr:nth-child(even) {
+	background: #f8fafc;
+}
+
+.mpd-product-tabs table.shop_attributes tr:last-child,
+.mpd-product-tabs table.woocommerce-product-attributes tr:last-child,
+.woocommerce-Tabs-panel--additional_information table.shop_attributes tr:last-child {
+	border-bottom: none;
+}
+
+.mpd-product-tabs table.shop_attributes th,
+.mpd-product-tabs table.woocommerce-product-attributes th,
+.mpd-tabs-accordion table.shop_attributes th,
+.woocommerce-Tabs-panel--additional_information table.shop_attributes th {
+	width: 25%;
+	min-width: 130px;
+	padding: 13px 20px;
+	font-size: 14px;
+	font-weight: 600;
+	line-height: 1.5;
+	color: #1e293b;
+	text-align: left;
+	vertical-align: middle;
+	background: transparent;
+	border: none;
+	border-right: 1px solid #e2e8f0;
+	border-bottom: 1px solid #e2e8f0;
+}
+
+.mpd-product-tabs table.shop_attributes td,
+.mpd-product-tabs table.woocommerce-product-attributes td,
+.mpd-tabs-accordion table.shop_attributes td,
+.woocommerce-Tabs-panel--additional_information table.shop_attributes td {
+	padding: 13px 20px;
+	font-size: 14px;
+	font-weight: 400;
+	font-style: normal !important;
+	line-height: 1.5;
+	color: #475569;
+	text-align: left;
+	vertical-align: middle;
+	background: transparent;
+	border: none;
+	border-bottom: 1px solid #e2e8f0;
+}
+
+.mpd-product-tabs table.shop_attributes tr:last-child th,
+.mpd-product-tabs table.shop_attributes tr:last-child td,
+.mpd-product-tabs table.woocommerce-product-attributes tr:last-child th,
+.mpd-product-tabs table.woocommerce-product-attributes tr:last-child td,
+.woocommerce-Tabs-panel--additional_information table.shop_attributes tr:last-child th,
+.woocommerce-Tabs-panel--additional_information table.shop_attributes tr:last-child td {
+	border-bottom: none;
+}
+
+.mpd-product-tabs table.shop_attributes td p,
+.mpd-product-tabs table.woocommerce-product-attributes td p,
+.woocommerce-Tabs-panel--additional_information table.shop_attributes td p {
+	margin: 0;
+	padding: 0;
+	font-style: normal !important;
+	color: inherit;
+}
+
+.mpd-product-tabs table.shop_attributes td a,
+.mpd-product-tabs table.woocommerce-product-attributes td a,
+.woocommerce-Tabs-panel--additional_information table.shop_attributes td a {
+	color: #0f172a;
+	text-decoration: none;
+	font-weight: 500;
+	transition: color 0.2s ease;
+}
+
+.mpd-product-tabs table.shop_attributes td a:hover,
+.mpd-product-tabs table.woocommerce-product-attributes td a:hover,
+.woocommerce-Tabs-panel--additional_information table.shop_attributes td a:hover {
+	color: #0073aa;
+	text-decoration: underline;
 }
 
 /* Vertical Tabs Layout */
