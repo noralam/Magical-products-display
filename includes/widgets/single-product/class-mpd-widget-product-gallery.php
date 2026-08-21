@@ -616,7 +616,7 @@ class Product_Gallery extends Widget_Base {
 
 		if ( ! $has_images && ! $has_video ) {
 			echo '<div class="mpd-gallery-placeholder" style="background: #f5f5f5; padding: 40px; text-align: center; border: 1px dashed #ccc;">';
-			echo wc_placeholder_img( 'woocommerce_single' );
+			echo wp_kses_post( wc_placeholder_img( 'woocommerce_single' ) );
 			echo '<p style="margin-top: 15px; color: #666;">' . esc_html__( 'No product images available.', 'magical-products-display' ) . '</p>';
 			echo '</div>';
 			return;
@@ -835,28 +835,39 @@ class Product_Gallery extends Widget_Base {
 					<svg xmlns="http://www.w3.org/2000/svg" width="68" height="48" viewBox="0 0 68 48">
 						<path class="mpd-video-play-bg" d="M66.52,7.74c-0.78-2.93-2.49-5.41-5.42-6.19C55.79,.13,34,0,34,0S12.21,.13,6.9,1.55 C3.97,2.33,2.27,4.81,1.48,7.74C0.06,13.05,0,24,0,24s0.06,10.95,1.48,16.26c0.78,2.93,2.49,5.41,5.42,6.19 C12.21,47.87,34,48,34,48s21.79-0.13,27.1-1.55c2.93-0.78,4.64-3.26,5.42-6.19C67.94,34.95,68,24,68,24S67.94,13.05,66.52,7.74z" fill="#f00"/>
 						<path d="M 45,24 27,14 27,34" fill="#fff"/>
-					</svg>
-				</div>
-			</div>
-			
-			<div class="mpd-video-embed-container">
-				<iframe src="" 
+		$embed_url   = Product_Video_Metabox::get_embed_url( $item['url'] );
+		$video_type  = Product_Video_Metabox::get_video_type( $item['url'] );
+		$autoplay    = 'yes' === ( $settings['video_autoplay'] ?? '' );
+		$aspect_ratio = $settings['video_aspect_ratio'] ?? '16-9';
+
+		if ( $autoplay ) {
+			$embed_url = add_query_arg( array(
+				'autoplay' => 1,
+				'mute'     => 1,
+			), $embed_url );
+		}
+		?>
+		<div class="mpd-gallery-slide mpd-gallery-video-slide<?php echo esc_attr( $active_class ); ?>" data-index="<?php echo esc_attr( $index ); ?>" data-type="video" data-video-type="<?php echo esc_attr( $video_type ); ?>">
+			<div class="mpd-video-wrapper mpd-aspect-<?php echo esc_attr( $aspect_ratio ); ?>">
+				<iframe src="<?php echo esc_url( $embed_url ); ?>" 
 						frameborder="0" 
 						allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
-						allowfullscreen></iframe>
+						allowfullscreen
+						title="<?php esc_attr_e( 'Product Video', 'magical-products-display' ); ?>">
+				</iframe>
 			</div>
 		</div>
 		<?php
 	}
 
 	/**
-	 * Render thumbnails (horizontal or vertical).
+	 * Render thumbnail navigation (horizontal or vertical).
 	 *
 	 * @since 2.0.0
 	 *
-	 * @param array $images     Array of attachment IDs.
-	 * @param int   $columns    Number of columns/rows.
-	 * @param bool  $vertical   Whether to render vertically.
+	 * @param array $images   Array of image attachment IDs.
+	 * @param int   $columns  Number of columns/rows.
+	 * @param bool  $vertical Whether to render vertically.
 	 * @return void
 	 */
 	private function render_thumbnails( $images, $columns, $vertical = false ) {
@@ -870,7 +881,7 @@ class Product_Gallery extends Widget_Base {
 		<div class="<?php echo esc_attr( $class ); ?>" style="<?php echo esc_attr( $style_var ); ?>: <?php echo esc_attr( $columns ); ?>;">
 			<?php foreach ( $images as $index => $attachment_id ) : ?>
 				<div class="mpd-thumb-item<?php echo 0 === $index ? ' mpd-thumb-active' : ''; ?>" data-index="<?php echo esc_attr( $index ); ?>">
-					<?php echo wp_get_attachment_image( $attachment_id, 'woocommerce_thumbnail' ); ?>
+					<?php echo wp_kses_post( wp_get_attachment_image( $attachment_id, 'woocommerce_thumbnail' ) ); ?>
 				</div>
 			<?php endforeach; ?>
 		</div>
@@ -918,8 +929,8 @@ class Product_Gallery extends Widget_Base {
 						$thumb_variation_attr = ' data-variation-id="' . esc_attr( $item['variation_id'] ) . '"';
 					}
 					?>
-					<div class="mpd-thumb-item<?php echo 0 === $index ? ' mpd-thumb-active' : ''; ?>" data-index="<?php echo esc_attr( $index ); ?>" data-type="image" data-attachment-id="<?php echo esc_attr( $item['id'] ); ?>"<?php echo $thumb_variation_attr; ?>>
-						<?php echo wp_get_attachment_image( $item['id'], 'woocommerce_thumbnail' ); ?>
+					<div class="mpd-thumb-item<?php echo 0 === $index ? ' mpd-thumb-active' : ''; ?>" data-index="<?php echo esc_attr( $index ); ?>" data-type="image" data-attachment-id="<?php echo esc_attr( $item['id'] ); ?>"<?php echo esc_attr( $thumb_variation_attr ); ?>>
+						<?php echo wp_kses_post( wp_get_attachment_image( $item['id'], 'woocommerce_thumbnail' ) ); ?>
 					</div>
 				<?php endif; ?>
 			<?php endforeach; ?>
@@ -940,40 +951,36 @@ class Product_Gallery extends Widget_Base {
 		$attachment_ids = $product->get_gallery_image_ids();
 		$main_image_id  = $product->get_image_id();
 
-		// Get video data if video support is enabled.
-		$video_url      = '';
-		$video_position = 'first';
-		$has_video      = false;
+		if ( $main_image_id ) {
+			array_unshift( $attachment_ids, $main_image_id );
+		}
 
-		if ( $this->is_pro() && 'yes' === ( $settings['video_support'] ?? '' ) ) {
+		// Check for product video.
+		$has_video      = false;
+		$video_url      = '';
+		$video_position = 'last';
+
+		if ( class_exists( 'MagicalProductsDisplay\Admin\Product_Video_Metabox' ) ) {
 			$video_url      = Product_Video_Metabox::get_product_video_url( $product->get_id() );
 			$video_position = Product_Video_Metabox::get_product_video_position( $product->get_id() );
 			$has_video      = ! empty( $video_url );
 		}
 
-		// Add main image to the beginning.
-		if ( $main_image_id ) {
-			array_unshift( $attachment_ids, $main_image_id );
-		}
-
 		// Collect variation images if pro feature is enabled.
 		$variation_map = array();
-		if ( $this->is_pro() && 'yes' === ( $settings['variation_images'] ?? '' ) && $product->is_type( 'variable' ) ) {
+		if ( $this->is_pro() && 'yes' === ( $settings['enable_variation_gallery'] ?? 'yes' ) && $product->is_type( 'variable' ) ) {
 			$variations = $product->get_available_variations();
 			foreach ( $variations as $variation ) {
 				$var_image_id = $variation['image_id'] ?? 0;
-				if ( $var_image_id && ! in_array( $var_image_id, $attachment_ids, true ) && ! isset( $variation_map[ $var_image_id ] ) ) {
-					$attachment_ids[]                  = $var_image_id;
-					$variation_map[ $var_image_id ] = $variation['variation_id'];
-				}
-				if ( $var_image_id && in_array( $var_image_id, $attachment_ids, true ) && ! isset( $variation_map[ $var_image_id ] ) ) {
+				if ( $var_image_id && ! in_array( $var_image_id, $attachment_ids, true ) ) {
+					$attachment_ids[] = $var_image_id;
 					$variation_map[ $var_image_id ] = $variation['variation_id'];
 				}
 			}
 		}
 
 		if ( empty( $attachment_ids ) && ! $has_video ) {
-			echo wc_placeholder_img();
+			echo wp_kses_post( wc_placeholder_img() );
 			return;
 		}
 
@@ -1024,16 +1031,16 @@ class Product_Gallery extends Widget_Base {
 						$grid_variation_attr = ' data-variation-id="' . esc_attr( $item['variation_id'] ) . '"';
 					}
 					?>
-					<div class="mpd-gallery-grid-item" data-type="image" data-attachment-id="<?php echo esc_attr( $item['id'] ); ?>"<?php echo $grid_variation_attr; ?>>
+					<div class="mpd-gallery-grid-item" data-type="image" data-attachment-id="<?php echo esc_attr( $item['id'] ); ?>"<?php echo esc_attr( $grid_variation_attr ); ?>>
 						<?php
 						if ( $enable_lightbox ) {
 							printf(
 								'<a href="%s" data-lightbox="product-gallery">%s</a>',
 								esc_url( $full_url ),
-								wp_get_attachment_image( $item['id'], 'woocommerce_single' )
+								wp_kses_post( wp_get_attachment_image( $item['id'], 'woocommerce_single' ) )
 							);
 						} else {
-							echo wp_get_attachment_image( $item['id'], 'woocommerce_single' );
+							echo wp_kses_post( wp_get_attachment_image( $item['id'], 'woocommerce_single' ) );
 						}
 						?>
 					</div>

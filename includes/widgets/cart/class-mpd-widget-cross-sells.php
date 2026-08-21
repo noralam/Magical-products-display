@@ -1536,7 +1536,7 @@ class Cross_Sells extends Widget_Base {
 
 			<?php if ( $show_image ) : ?>
 				<a href="<?php echo esc_url( $product->get_permalink() ); ?>" class="woocommerce-LoopProduct-link mpd-cross-sell-image-link">
-					<?php echo $product->get_image( $image_size ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
+					<?php echo wp_kses_post( $product->get_image( $image_size ) ); ?>
 				</a>
 			<?php endif; ?>
 
@@ -1556,7 +1556,7 @@ class Cross_Sells extends Widget_Base {
 				<?php endif; ?>
 
 				<?php if ( $show_price ) : ?>
-					<span class="price"><?php echo $product->get_price_html(); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?></span>
+					<span class="price"><?php echo wp_kses_post( $product->get_price_html() ); ?></span>
 				<?php endif; ?>
 
 				<?php if ( $show_add_to_cart ) : ?>

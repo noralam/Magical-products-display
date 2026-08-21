@@ -1269,7 +1269,7 @@ class Upsells extends Widget_Base {
 
 						<?php if ( 'yes' === ( $settings['show_rating'] ?? 'yes' ) && $upsell_product->get_average_rating() ) : ?>
 							<div class="mpd-product-rating">
-								<?php echo wc_get_rating_html( $upsell_product->get_average_rating(), $upsell_product->get_rating_count() ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
+								<?php echo wp_kses_post( wc_get_rating_html( $upsell_product->get_average_rating(), $upsell_product->get_rating_count() ) ); ?>
 							</div>
 						<?php endif; ?>
 
@@ -1365,7 +1365,7 @@ class Upsells extends Widget_Base {
 							<?php endif; ?>
 
 							<?php if ( 'yes' === $settings['show_rating'] && $upsell_product->get_average_rating() ) : ?>
-								<?php echo wc_get_rating_html( $upsell_product->get_average_rating() ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
+								<?php echo wp_kses_post( wc_get_rating_html( $upsell_product->get_average_rating() ) ); ?>
 							<?php endif; ?>
 
 							<?php if ( 'yes' === $settings['show_price'] ) : ?>
@@ -1421,6 +1421,7 @@ class Upsells extends Widget_Base {
 						navigation: {
 							nextEl: swiperEl.querySelector('.swiper-button-next'),
 							prevEl: swiperEl.querySelector('.swiper-button-prev'),
+							clickable: true,
 						},
 						pagination: {
 							el: swiperEl.querySelector('.swiper-pagination'),
@@ -1489,7 +1490,7 @@ class Upsells extends Widget_Base {
 						<?php endif; ?>
 
 						<?php if ( 'yes' === $settings['show_rating'] && $upsell_product->get_average_rating() ) : ?>
-							<?php echo wc_get_rating_html( $upsell_product->get_average_rating() ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
+							<?php echo wp_kses_post( wc_get_rating_html( $upsell_product->get_average_rating() ) ); ?>
 						<?php endif; ?>
 
 						<?php if ( 'yes' === $settings['show_price'] ) : ?>

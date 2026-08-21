@@ -1020,7 +1020,7 @@ class Product_Tabs extends Widget_Base {
 			</ul>
 			<?php $first = true; ?>
 			<?php foreach ( $tabs as $key => $tab ) : ?>
-				<div class="woocommerce-Tabs-panel woocommerce-Tabs-panel--<?php echo esc_attr( $key ); ?> panel entry-content wc-tab" id="tab-<?php echo esc_attr( $key ); ?>" role="tabpanel" aria-labelledby="tab-title-<?php echo esc_attr( $key ); ?>" <?php echo ! $first ? 'style="display: none;"' : ''; ?>>
+				<div class="woocommerce-Tabs-panel woocommerce-Tabs-panel--<?php echo esc_attr( $key ); ?> panel entry-content wc-tab" id="tab-<?php echo esc_attr( $key ); ?>" role="tabpanel" aria-labelledby="tab-title-<?php echo esc_attr( $key ); ?>"<?php if ( ! $first ) : ?> style="display: none;"<?php endif; ?>>
 					<?php
 					if ( isset( $tab['callback'] ) ) {
 						if ( 'comments_template' === $tab['callback'] ) {

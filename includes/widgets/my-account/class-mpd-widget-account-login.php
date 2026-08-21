@@ -1750,7 +1750,7 @@ class Account_Login extends Widget_Base {
 		$notice = isset( $notices[ $notice_type ] ) ? $notices[ $notice_type ] : $notices['error'];
 		?>
 		<div class="<?php echo esc_attr( $notice['class'] ); ?>" role="alert" style="display: flex !important; visibility: visible !important; opacity: 1 !important;">
-			<span class="mpd-notice__icon" style="display: inline-flex !important; visibility: visible !important;"><?php echo $notice['icon']; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?></span>
+			<span class="mpd-notice__icon" style="display: inline-flex !important; visibility: visible !important;"><?php echo wp_kses( $notice['icon'], mgproducts_display_get_allowed_svg_tags() ); ?></span>
 			<span class="mpd-notice__text" style="display: inline-block !important; visibility: visible !important;"><?php echo esc_html( $notice['message'] ); ?></span>
 			<span class="mpd-notice__preview-badge"><?php esc_html_e( 'Preview', 'magical-products-display' ); ?></span>
 		</div>

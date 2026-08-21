@@ -608,7 +608,7 @@ class Product_Reviews extends Widget_Base {
 							<li class="review">
 								<div class="comment_container">
 									<?php if ( 'yes' === ( $settings['show_avatar'] ?? 'yes' ) ) : ?>
-										<?php echo get_avatar( $review->comment_author_email, 60 ); ?>
+										<?php echo wp_kses_post( get_avatar( $review->comment_author_email, 60 ) ); ?>
 									<?php endif; ?>
 									<div class="comment-text">
 										<?php if ( $rating ) : ?>
@@ -617,7 +617,7 @@ class Product_Reviews extends Widget_Base {
 											$rating_label = sprintf( esc_attr__( 'Rated %d out of 5', 'magical-products-display' ), $rating );
 											?>
 											<div class="star-rating" role="img" aria-label="<?php echo esc_attr( $rating_label ); ?>">
-												<?php echo wc_get_star_rating_html( $rating ); ?>
+												<?php echo wp_kses_post( wc_get_star_rating_html( $rating ) ); ?>
 											</div>
 										<?php endif; ?>
 										<p class="meta">

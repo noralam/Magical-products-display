@@ -903,7 +903,7 @@ class Related_Products extends Widget_Base {
 
 						<?php if ( 'yes' === ( $settings['show_rating'] ?? 'yes' ) && $related_product->get_average_rating() ) : ?>
 							<div class="mpd-product-rating">
-								<?php echo wc_get_rating_html( $related_product->get_average_rating(), $related_product->get_rating_count() ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
+								<?php echo wp_kses_post( wc_get_rating_html( $related_product->get_average_rating(), $related_product->get_rating_count() ) ); ?>
 							</div>
 						<?php endif; ?>
 
@@ -1006,7 +1006,7 @@ class Related_Products extends Widget_Base {
 
 								<?php if ( 'yes' === $settings['show_rating'] && $related_product->get_average_rating() ) : ?>
 									<div class="mpd-product-rating">
-										<?php echo wc_get_rating_html( $related_product->get_average_rating(), $related_product->get_rating_count() ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
+										<?php echo wp_kses_post( wc_get_rating_html( $related_product->get_average_rating(), $related_product->get_rating_count() ) ); ?>
 									</div>
 								<?php endif; ?>
 

@@ -618,9 +618,9 @@ function mpd_add_mini_cart_fragments( $fragments ) {
 			echo '<div class="mpd-mini-cart-item" data-cart-item-key="' . esc_attr( $cart_item_key ) . '">';
 
 			if ( empty( $product_permalink ) ) {
-				echo '<div class="mpd-mini-cart-item-thumb">' . $thumbnail . '</div>'; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+				echo wp_kses_post( '<div class="mpd-mini-cart-item-thumb">' . $thumbnail . '</div>' );
 			} else {
-				echo '<a href="' . esc_url( $product_permalink ) . '" class="mpd-mini-cart-item-thumb">' . $thumbnail . '</a>'; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+				echo wp_kses_post( '<a href="' . esc_url( $product_permalink ) . '" class="mpd-mini-cart-item-thumb">' . $thumbnail . '</a>' );
 			}
 
 			echo '<div class="mpd-mini-cart-item-details">';
@@ -631,10 +631,10 @@ function mpd_add_mini_cart_fragments( $fragments ) {
 				echo '<a href="' . esc_url( $product_permalink ) . '" class="mpd-mini-cart-item-title">' . wp_kses_post( $product_name ) . '</a>';
 			}
 
-			echo '<span class="mpd-mini-cart-item-quantity">' . esc_html( $cart_item['quantity'] ) . ' &times; ' . $product_price . '</span>'; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+			echo '<span class="mpd-mini-cart-item-quantity">' . esc_html( $cart_item['quantity'] ) . ' &times; ' . wp_kses_post( $product_price ) . '</span>';
 			echo '</div>';
 
-			echo apply_filters( // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+			echo wp_kses_post( apply_filters(
 				'woocommerce_cart_item_remove_link',
 				sprintf(
 					'<a href="%s" class="mpd-mini-cart-item-remove remove remove_from_cart_button" aria-label="%s" data-product_id="%s" data-cart_item_key="%s" data-product_sku="%s">&times;</a>',
@@ -646,7 +646,7 @@ function mpd_add_mini_cart_fragments( $fragments ) {
 					esc_attr( $_product->get_sku() )
 				),
 				$cart_item_key
-			);
+			) );
 
 			echo '</div>';
 			$displayed++;
@@ -750,7 +750,7 @@ function mpd_ajax_quick_view() {
 			if ( $image_url ) {
 				echo '<img src="' . esc_url( $image_url ) . '" alt="' . esc_attr( $product->get_name() ) . '">';
 			} else {
-				echo wc_placeholder_img( 'large' );
+				echo wp_kses_post( wc_placeholder_img( 'large' ) );
 			}
 			?>
 		</div>
