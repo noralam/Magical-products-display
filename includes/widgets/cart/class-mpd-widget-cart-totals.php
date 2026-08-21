@@ -787,10 +787,12 @@ class Cart_Totals extends Widget_Base {
 					?>
 					<div class="mpd-free-shipping-notice">
 						<?php
-						printf(
-							/* translators: %s: amount remaining for free shipping */
-							esc_html__( 'Spend %s more for free shipping!', 'magical-products-display' ),
-							wc_price( $remaining )
+						echo wp_kses_post(
+							sprintf(
+								/* translators: %s: amount remaining for free shipping */
+								esc_html__( 'Spend %s more for free shipping!', 'magical-products-display' ),
+								wc_price( $remaining )
+							)
 						);
 						?>
 						<div class="mpd-free-shipping-progress">
@@ -991,10 +993,12 @@ class Cart_Totals extends Widget_Base {
 					?>
 					<div class="mpd-free-shipping-notice">
 						<?php
-						printf(
-							/* translators: %s: amount remaining for free shipping */
-							esc_html__( 'Spend %s more for free shipping!', 'magical-products-display' ),
-							wc_price( $remaining )
+						echo wp_kses_post(
+							sprintf(
+								/* translators: %s: amount remaining for free shipping */
+								esc_html__( 'Spend %s more for free shipping!', 'magical-products-display' ),
+								wc_price( $remaining )
+							)
 						);
 						?>
 						<div class="mpd-free-shipping-progress">

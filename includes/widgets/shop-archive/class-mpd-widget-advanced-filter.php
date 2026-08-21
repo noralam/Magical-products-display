@@ -3222,7 +3222,7 @@ class Advanced_Filter extends Widget_Base {
 									esc_html_e( '5 stars', 'magical-products-display' );
 								} else {
 									/* translators: %d: star rating */
-									printf( esc_html__( '%d stars & up', 'magical-products-display' ), $rating );
+									printf( esc_html__( '%d stars & up', 'magical-products-display' ), (int) $rating );
 								}
 								?>
 							</span>

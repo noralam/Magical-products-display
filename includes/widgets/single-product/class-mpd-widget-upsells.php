@@ -1284,26 +1284,28 @@ class Upsells extends Widget_Base {
 						<?php if ( 'yes' === ( $settings['show_add_to_cart'] ?? 'yes' ) ) : ?>
 							<div class="mpd-product-button">
 								<?php
-								echo apply_filters(
-									'woocommerce_loop_add_to_cart_link',
-									sprintf(
-										'<a href="%s" data-quantity="1" class="%s" %s>%s</a>',
-										esc_url( $upsell_product->add_to_cart_url() ),
-										esc_attr( implode( ' ', array_filter( array(
-											'button',
-											'mpd-add-to-cart',
-											$upsell_product->is_purchasable() && $upsell_product->is_in_stock() ? 'add_to_cart_button' : '',
-											$upsell_product->supports( 'ajax_add_to_cart' ) && $upsell_product->is_purchasable() && $upsell_product->is_in_stock() ? 'ajax_add_to_cart' : '',
-										) ) ) ),
-										wc_implode_html_attributes( array(
-											'data-product_id'  => $upsell_product->get_id(),
-											'data-product_sku' => $upsell_product->get_sku(),
-											'aria-label'       => $upsell_product->add_to_cart_description(),
-											'rel'              => 'nofollow',
-										) ),
-										esc_html( $upsell_product->add_to_cart_text() )
-									),
-									$upsell_product
+								echo wp_kses_post(
+									apply_filters(
+										'woocommerce_loop_add_to_cart_link',
+										sprintf(
+											'<a href="%s" data-quantity="1" class="%s" %s>%s</a>',
+											esc_url( $upsell_product->add_to_cart_url() ),
+											esc_attr( implode( ' ', array_filter( array(
+												'button',
+												'mpd-add-to-cart',
+												$upsell_product->is_purchasable() && $upsell_product->is_in_stock() ? 'add_to_cart_button' : '',
+												$upsell_product->supports( 'ajax_add_to_cart' ) && $upsell_product->is_purchasable() && $upsell_product->is_in_stock() ? 'ajax_add_to_cart' : '',
+											) ) ) ),
+											wc_implode_html_attributes( array(
+												'data-product_id'  => $upsell_product->get_id(),
+												'data-product_sku' => $upsell_product->get_sku(),
+												'aria-label'       => $upsell_product->add_to_cart_description(),
+												'rel'              => 'nofollow',
+											) ),
+											esc_html( $upsell_product->add_to_cart_text() )
+										),
+										$upsell_product
+									)
 								);
 								?>
 							</div>

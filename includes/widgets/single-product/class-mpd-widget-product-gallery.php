@@ -773,12 +773,8 @@ class Product_Gallery extends Widget_Base {
 	private function render_image_slide( $item, $index, $active_class ) {
 		$full_size_image = wp_get_attachment_image_src( $item['id'], 'full' );
 		$image_title     = get_post_field( 'post_title', $item['id'] );
-		$variation_attr  = '';
-		if ( ! empty( $item['variation_id'] ) ) {
-			$variation_attr = ' data-variation-id="' . esc_attr( $item['variation_id'] ) . '"';
-		}
 		?>
-		<div class="mpd-gallery-slide<?php echo esc_attr( $active_class ); ?>" data-index="<?php echo esc_attr( $index ); ?>" data-type="image" data-attachment-id="<?php echo esc_attr( $item['id'] ); ?>"<?php echo $variation_attr; ?>>
+		<div class="mpd-gallery-slide<?php echo esc_attr( $active_class ); ?>" data-index="<?php echo esc_attr( $index ); ?>" data-type="image" data-attachment-id="<?php echo esc_attr( $item['id'] ); ?>"<?php if ( ! empty( $item['variation_id'] ) ) : ?> data-variation-id="<?php echo esc_attr( $item['variation_id'] ); ?>"<?php endif; ?>>
 			<a href="<?php echo esc_url( $full_size_image[0] ?? '' ); ?>" data-lightbox="mpd-gallery">
 				<?php echo wp_get_attachment_image( $item['id'], 'woocommerce_single', false, array( 'title' => $image_title ) ); ?>
 			</a>

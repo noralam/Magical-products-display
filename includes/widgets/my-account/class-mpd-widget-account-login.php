@@ -1468,7 +1468,7 @@ class Account_Login extends Widget_Base {
 		<h2 class="mpd-account-login__title"><?php esc_html_e( 'Lost password', 'magical-products-display' ); ?></h2>
 
 		<form method="post" class="woocommerce-ResetPassword lost_reset_password">
-			<p><?php echo apply_filters( 'woocommerce_lost_password_message', esc_html__( 'Lost your password? Please enter your username or email address. You will receive a link to create a new password via email.', 'magical-products-display' ) ); ?></p>
+			<p><?php echo wp_kses_post( apply_filters( 'woocommerce_lost_password_message', esc_html__( 'Lost your password? Please enter your username or email address. You will receive a link to create a new password via email.', 'magical-products-display' ) ) ); ?></p>
 
 			<p class="woocommerce-form-row woocommerce-form-row--wide form-row form-row-wide">
 				<label for="user_login"><?php esc_html_e( 'Username or email', 'magical-products-display' ); ?></label>
@@ -1537,7 +1537,7 @@ class Account_Login extends Widget_Base {
 		<h2 class="mpd-account-login__title"><?php esc_html_e( 'Reset password', 'magical-products-display' ); ?></h2>
 
 		<form method="post" class="woocommerce-ResetPassword lost_reset_password">
-			<p><?php echo apply_filters( 'woocommerce_reset_password_message', esc_html__( 'Enter a new password below.', 'magical-products-display' ) ); ?></p>
+			<p><?php echo wp_kses_post( apply_filters( 'woocommerce_reset_password_message', esc_html__( 'Enter a new password below.', 'magical-products-display' ) ) ); ?></p>
 
 			<p class="woocommerce-form-row woocommerce-form-row--wide form-row form-row-wide">
 				<label for="password_1"><?php esc_html_e( 'New password', 'magical-products-display' ); ?>&nbsp;<span class="required" aria-hidden="true">*</span></label>

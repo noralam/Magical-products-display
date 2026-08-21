@@ -916,26 +916,28 @@ class Related_Products extends Widget_Base {
 						<?php if ( 'yes' === ( $settings['show_add_to_cart'] ?? 'yes' ) ) : ?>
 							<div class="mpd-product-button">
 								<?php
-								echo apply_filters(
-									'woocommerce_loop_add_to_cart_link',
-									sprintf(
-										'<a href="%s" data-quantity="1" class="%s" %s>%s</a>',
-										esc_url( $related_product->add_to_cart_url() ),
-										esc_attr( implode( ' ', array_filter( array(
-											'button',
-											'mpd-add-to-cart',
-											$related_product->is_purchasable() && $related_product->is_in_stock() ? 'add_to_cart_button' : '',
-											$related_product->supports( 'ajax_add_to_cart' ) && $related_product->is_purchasable() && $related_product->is_in_stock() ? 'ajax_add_to_cart' : '',
-										) ) ) ),
-										wc_implode_html_attributes( array(
-											'data-product_id'  => $related_product->get_id(),
-											'data-product_sku' => $related_product->get_sku(),
-											'aria-label'       => $related_product->add_to_cart_description(),
-											'rel'              => 'nofollow',
-										) ),
-										esc_html( $related_product->add_to_cart_text() )
-									),
-									$related_product
+								echo wp_kses_post(
+									apply_filters(
+										'woocommerce_loop_add_to_cart_link',
+										sprintf(
+											'<a href="%s" data-quantity="1" class="%s" %s>%s</a>',
+											esc_url( $related_product->add_to_cart_url() ),
+											esc_attr( implode( ' ', array_filter( array(
+												'button',
+												'mpd-add-to-cart',
+												$related_product->is_purchasable() && $related_product->is_in_stock() ? 'add_to_cart_button' : '',
+												$related_product->supports( 'ajax_add_to_cart' ) && $related_product->is_purchasable() && $related_product->is_in_stock() ? 'ajax_add_to_cart' : '',
+											) ) ) ),
+											wc_implode_html_attributes( array(
+												'data-product_id'  => $related_product->get_id(),
+												'data-product_sku' => $related_product->get_sku(),
+												'aria-label'       => $related_product->add_to_cart_description(),
+												'rel'              => 'nofollow',
+											) ),
+											esc_html( $related_product->add_to_cart_text() )
+										),
+										$related_product
+									)
 								);
 								?>
 							</div>
@@ -1019,26 +1021,28 @@ class Related_Products extends Widget_Base {
 								<?php if ( 'yes' === $settings['show_add_to_cart'] ) : ?>
 									<div class="mpd-product-button">
 										<?php
-										echo apply_filters(
-											'woocommerce_loop_add_to_cart_link',
-											sprintf(
-												'<a href="%s" data-quantity="1" class="%s" %s>%s</a>',
-												esc_url( $related_product->add_to_cart_url() ),
-												esc_attr( implode( ' ', array_filter( array(
-													'button',
-													'mpd-add-to-cart',
-													$related_product->is_purchasable() && $related_product->is_in_stock() ? 'add_to_cart_button' : '',
-													$related_product->supports( 'ajax_add_to_cart' ) && $related_product->is_purchasable() && $related_product->is_in_stock() ? 'ajax_add_to_cart' : '',
-												) ) ) ),
-												wc_implode_html_attributes( array(
-													'data-product_id'  => $related_product->get_id(),
-													'data-product_sku' => $related_product->get_sku(),
-													'aria-label'       => $related_product->add_to_cart_description(),
-													'rel'              => 'nofollow',
-												) ),
-												esc_html( $related_product->add_to_cart_text() )
-											),
-											$related_product
+										echo wp_kses_post(
+											apply_filters(
+												'woocommerce_loop_add_to_cart_link',
+												sprintf(
+													'<a href="%s" data-quantity="1" class="%s" %s>%s</a>',
+													esc_url( $related_product->add_to_cart_url() ),
+													esc_attr( implode( ' ', array_filter( array(
+														'button',
+														'mpd-add-to-cart',
+														$related_product->is_purchasable() && $related_product->is_in_stock() ? 'add_to_cart_button' : '',
+														$related_product->supports( 'ajax_add_to_cart' ) && $related_product->is_purchasable() && $related_product->is_in_stock() ? 'ajax_add_to_cart' : '',
+													) ) ) ),
+													wc_implode_html_attributes( array(
+														'data-product_id'  => $related_product->get_id(),
+														'data-product_sku' => $related_product->get_sku(),
+														'aria-label'       => $related_product->add_to_cart_description(),
+														'rel'              => 'nofollow',
+													) ),
+													esc_html( $related_product->add_to_cart_text() )
+												),
+												$related_product
+											)
 										);
 										?>
 									</div>

@@ -3031,7 +3031,7 @@ class mgProducts_Tab extends \Elementor\Widget_Base
                     <?php
                     printf(
                         '<%1$s class="mgpde-ptitle">%2$s</%1$s>',
-                        mprd_validate_html_tag($mgpdeg_title_tag),
+                        tag_escape( mprd_validate_html_tag($mgpdeg_title_tag) ),
                         esc_html(wp_trim_words(get_the_title(), $mgpdeg_crop_title))
                     );
                     ?>
