@@ -808,6 +808,7 @@ class Breadcrumbs extends Widget_Base {
 
 		// Search Results.
 		if ( is_search() ) {
+			/* translators: %s: search query */
 			$breadcrumbs[] = array(
 				'title' => sprintf( esc_html__( 'Search Results for: %s', 'magical-products-display' ), get_search_query() ),
 				'link'  => '',

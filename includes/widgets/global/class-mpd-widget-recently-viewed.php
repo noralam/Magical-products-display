@@ -885,8 +885,10 @@ class Recently_Viewed extends Widget_Base {
 						<?php
 						$rating = $product->get_average_rating();
 						$rating_percent = ( $rating / 5 ) * 100;
+						/* translators: %s: rating score */
+						$rating_aria = sprintf( __( 'Rated %s out of 5', 'magical-products-display' ), $rating );
 						?>
-						<div class="star-rating" role="img" aria-label="<?php echo esc_attr( sprintf( __( 'Rated %s out of 5', 'magical-products-display' ), $rating ) ); ?>">
+						<div class="star-rating" role="img" aria-label="<?php echo esc_attr( $rating_aria ); ?>">
 							<span style="width:<?php echo esc_attr( $rating_percent ); ?>%"></span>
 						</div>
 					</div>

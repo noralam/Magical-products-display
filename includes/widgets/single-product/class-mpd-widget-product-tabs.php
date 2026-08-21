@@ -985,8 +985,10 @@ class Product_Tabs extends Widget_Base {
 
 		// Reviews tab.
 		if ( 'yes' === ( $settings['show_reviews_tab'] ?? 'yes' ) && comments_open() ) {
+			/* translators: %d: number of reviews */
+			$reviews_tab_title = sprintf( __( 'Reviews (%d)', 'magical-products-display' ), $product->get_review_count() );
 			$tabs['reviews'] = array(
-				'title'    => sprintf( __( 'Reviews (%d)', 'magical-products-display' ), $product->get_review_count() ),
+				'title'    => $reviews_tab_title,
 				'priority' => 30,
 				'callback' => 'comments_template',
 			);
@@ -1024,7 +1026,9 @@ class Product_Tabs extends Widget_Base {
 						if ( 'comments_template' === $tab['callback'] ) {
 							// Simplified reviews display for editor.
 							echo '<h2>' . esc_html__( 'Reviews', 'magical-products-display' ) . '</h2>';
-							echo '<p>' . sprintf( esc_html__( 'This product has %d reviews.', 'magical-products-display' ), $product->get_review_count() ) . '</p>';
+							/* translators: %d: number of reviews */
+							$reviews_count_text = sprintf( esc_html__( 'This product has %d reviews.', 'magical-products-display' ), $product->get_review_count() );
+							echo '<p>' . esc_html( $reviews_count_text ) . '</p>';
 						} else {
 							call_user_func( $tab['callback'], $key, $tab );
 						}

@@ -1018,7 +1018,11 @@ class Upsells extends Widget_Base {
 					<?php endif; ?>
 
 					<?php if ( 'yes' === ( $settings['show_rating'] ?? 'yes' ) && $product['rating'] ) : ?>
-						<div class="star-rating" role="img" aria-label="<?php printf( esc_attr__( 'Rated %s out of 5', 'magical-products-display' ), $product['rating'] ); ?>">
+						<?php
+						/* translators: %s: rating score */
+						$upsell_rating_label = sprintf( esc_attr__( 'Rated %s out of 5', 'magical-products-display' ), $product['rating'] );
+						?>
+						<div class="star-rating" role="img" aria-label="<?php echo esc_attr( $upsell_rating_label ); ?>">
 							<span style="width:<?php echo esc_attr( ( $product['rating'] / 5 ) * 100 ); ?>%"></span>
 						</div>
 					<?php endif; ?>

@@ -2197,7 +2197,11 @@ class Advanced_Filter extends Widget_Base {
 													<span class="star <?php echo esc_attr( $i <= $rating ? 'filled' : 'empty' ); ?>">★</span>
 												<?php endfor; ?>
 											</span>
-											<span class="mpd-inline-dropdown__rating-text"><?php echo esc_html( sprintf( __( '%d & up', 'magical-products-display' ), $rating ) ); ?></span>
+											<?php
+											/* translators: %d: star rating */
+											$rating_up_text = sprintf( __( '%d & up', 'magical-products-display' ), $rating );
+											?>
+											<span class="mpd-inline-dropdown__rating-text"><?php echo esc_html( $rating_up_text ); ?></span>
 										</a>
 									</li>
 								<?php endfor; ?>
@@ -2601,7 +2605,11 @@ class Advanced_Filter extends Widget_Base {
 												<span class="star <?php echo esc_attr( $i <= $rating ? 'filled' : 'empty' ); ?>">★</span>
 											<?php endfor; ?>
 										</span>
-										<span class="mpd-inline-dropdown__rating-text"><?php echo esc_html( sprintf( __( '%d & up', 'magical-products-display' ), $rating ) ); ?></span>
+										<?php
+										/* translators: %d: star rating */
+										$rating_up_text_2 = sprintf( __( '%d & up', 'magical-products-display' ), $rating );
+										?>
+										<span class="mpd-inline-dropdown__rating-text"><?php echo esc_html( $rating_up_text_2 ); ?></span>
 									</a>
 								</li>
 							<?php endfor; ?>

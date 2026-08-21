@@ -1583,8 +1583,10 @@ class Cross_Sells extends Widget_Base {
 	 */
 	private function render_star_rating( $rating, $review_count = 0 ) {
 		$rating = floatval( $rating );
+		/* translators: %s: rating score */
+		$rating_title = sprintf( __( 'Rated %s out of 5', 'magical-products-display' ), $rating );
 		?>
-		<div class="mpd-star-rating" title="<?php echo esc_attr( sprintf( __( 'Rated %s out of 5', 'magical-products-display' ), $rating ) ); ?>">
+		<div class="mpd-star-rating" title="<?php echo esc_attr( $rating_title ); ?>">
 			<?php
 			for ( $i = 1; $i <= 5; $i++ ) {
 				if ( $i <= floor( $rating ) ) {
