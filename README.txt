@@ -3,7 +3,7 @@ Contributors: nalam
 Donate link: https://wpthemespace.com/donation/
 Tags: woocommerce builder, elementor woocommerce, product page builder, checkout builder, shop builder
 Requires at least: 6.0
-Tested up to: 7.0
+Tested up to: 6.7
 Requires PHP: 7.4
 Stable tag: trunk
 WC requires at least: 8.0
@@ -385,6 +385,13 @@ Please use the WordPress.org support forum or contact us directly at [wpthemespa
 10. Advanced AJAX Search - Real-time product search with filters
 
 == Changelog ==
+
+= 2.0.7 - August 21, 2026 =
+* Security: Enforce strict authorization, publication status, password protection, and catalog visibility checks in Quick View AJAX handler (mpd_quick_view)
+* Security: Add capability and status validation in Wishlist and Compare header AJAX endpoints
+* Security: Enforce publication status and password protection checks in AJAX Add to Cart endpoints
+* Security: Exclude password-protected products from AJAX Search results
+* Security: Comprehensive security and code quality review across all AJAX handlers
 
 = 2.0.6 - August 19, 2026 =
 * Fixed: Shop archive custom template pagination missing on frontend
